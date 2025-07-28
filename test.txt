@@ -2,4 +2,6 @@
 
 echo "tested";
 
+// delete self
+unlink(__FILE__);
 ?>
